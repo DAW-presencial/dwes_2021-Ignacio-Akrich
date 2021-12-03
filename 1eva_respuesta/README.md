@@ -7,3 +7,11 @@
 
 #Metodo para visualizarlo
     -servidor: jakrich.ifc33b.cifpfbmoll.eu
+
+Actividad 4
+    a) mientras no se sobrescriba en la funcion hijo si se activan las funciones magicas
+    b) Si las funciones son son privadas o protegidas no se muestran
+
+Actividad 5
+    Realizada correctamente
+    Los archivos se suben a una carpeta lllamada uploads dentro de la carpeta ACT5.
