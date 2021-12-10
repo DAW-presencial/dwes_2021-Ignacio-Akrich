@@ -1,7 +1,7 @@
 <?php
     class Database{
 
-        // specify your own database credentials
+        // especificar credenciales de base de datos
         private $host = "localhost";
         private $db_name = "agenda_ignacio_db";
         private $username = "root";

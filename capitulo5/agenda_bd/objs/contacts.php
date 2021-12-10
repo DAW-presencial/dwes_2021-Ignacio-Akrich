@@ -15,25 +15,25 @@ class Contactos {
 
     function create(){
 
-        // to get time stamp for 'created' field
+        // para obtener la marca de tiempo para el campo 'creado'
         $this->create_time=date('Y-m-d H:i:s');
 
-        // insert query
+        // insertar consulta
         $query = "INSERT INTO " . $this->table_name . " SET name = :name, telephone = :telephone, create_time = :create_time, update_time = :create_time";
 
-        // prepare the query
+        // preparar la consulta
         $stmt = $this->conn->prepare($query);
 
-        // sanitize
+        // limpiar
         $this->name = htmlspecialchars($this->name);
         $this->telephone=htmlspecialchars(strip_tags($this->telephone));
 
-        // bind the values
+        // enlazar valores
         $stmt->bindParam(':name', $this->name);
         $stmt->bindParam(':telephone', $this->telephone);
         $stmt->bindParam(':create_time', $this->create_time);
 
-        // execute the query, also check if query was successful
+        // ejecutar la consulta, también verifique si la consulta fue exitosa 
         if($stmt->execute()){
                 return true;
         }else{
@@ -44,18 +44,18 @@ class Contactos {
 
     public function DropRow(){
 
-         // insert query
+         // insertar consulta
          $query = "DELETE FROM " . $this->table_name . " WHERE name = :name";
-         // prepare the query
+         // preparar la consulta
          $stmt = $this->conn->prepare($query);
          
-         // sanitize
+         // limpiar
          $this->name = htmlspecialchars($this->name);
          
-         // bind values
+         // enlazar valores 
          $stmt->bindParam(":name", $this->name);
          
-         // execute query
+         // ejecutar la solicitud 
          if ($stmt->execute()) {
              echo "<div class='alert alert-success'>El contacto fue eliminado.</div>";
          } else {
@@ -65,26 +65,26 @@ class Contactos {
 
     public function UpdateRow() {
             
-        // to get time stamp for 'created' field
+        // para obtener la marca de tiempo para el campo 'creado'
         $this->create_time=date('Y-m-d H:i:s');
         
-        // insert query
+        // insertar consulta
         $query = "UPDATE " . $this->table_name . " SET telephone = :telephone, update_time = :create_time WHERE name = :name";
         
         // prepare query
         $stmt = $this->conn->prepare($query);
         
-        // sanitize
+        // limpiar
         $this->name = htmlspecialchars($this->name);
         $this->telephone = htmlspecialchars($this->telephone);
         $this->create_time = htmlspecialchars($this->create_time);
         
-        // bind values
+        // enlazar valores 
         $stmt->bindParam(':name', $this->name);
         $stmt->bindParam(':telephone', $this->telephone);
         $stmt->bindParam(':create_time', $this->create_time);
         
-        // execute query
+        // ejecutar la solicitud 
         if($stmt->execute()){
                 return true;
         }
@@ -94,19 +94,19 @@ class Contactos {
     
 
        public function ContarRows() {
-        // insert query
+        // insertar consulta
         $query = "SELECT COUNT(*) FROM  " . $this->table_name . " WHERE name = :name";
 
         // prepare query
         $stmt = $this->conn->prepare($query);
 
-        // sanitize
+        // limpiar
         $this->name = htmlspecialchars($this->name);
 
-        // bind values
+        // enlazar valores 
         $stmt->bindParam(':name', $this->name);
 
-        // execute query
+        // ejecutar la solicitud 
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
@@ -118,13 +118,13 @@ class Contactos {
     }
     
     public function ContarAllRows() {
-        // insert query
+        // insertar consulta
         $query = "SELECT COUNT(*) FROM  " . $this->table_name;
 
         // prepare query
         $stmt = $this->conn->prepare($query);
 
-        // execute query
+        // ejecutar la solicitud 
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
@@ -136,7 +136,7 @@ class Contactos {
     }
 
     function readUserContactos(){
-        //select all data
+        //selecionar toda data
         $query = "SELECT
                     id, name, telephone, create_time
                 FROM
@@ -156,10 +156,9 @@ class Contactos {
         echo "</pre>";
     }
 
-    // used to read message name by its ID
     function readAllContactos(){
         
-        //select all data
+        //selecionar toda data
         $query = "SELECT
                     id, name, telephone, create_time, update_time
                 FROM

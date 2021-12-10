@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
     <title>Agenda de Contactos con Base de Datos</title>
 </head>
 <body>
@@ -22,11 +23,11 @@
         <li>Para actualizar un contacto escriba el mismo nombre y cambie el numero al que quiere actualizar</li>
     </ul>
         <form name="formulario" method="get" action="">
-            <label for="name">Name: </label>
+            <label for="name">Nombre: </label>
             <input type="text" id="username" name="name" required><br>
-            <label for="telephone">Contact Number: </label>
+            <label for="telephone">Teléfono: </label>
             <input type="text" maxlength="9" id="telephone" name="telephone"><br><br>
-            <input type="submit" value="Submit">
+            <input type="submit" value="Enviar">
         </form>   
         <?php
                 include_once 'objs/contacts.php';
@@ -37,10 +38,11 @@
                 $message = new Contactos($db);
         
                 function mostratTabla($message) {
+                    echo "<p>Contactos</p>";
                     echo "<table class='table table-hover table-responsive table-bordered'>";
                     echo "<tr>";
-                        echo "<th> Name </th>";
-                        echo "<th> Telephone </th>";
+                        echo "<th> Nombre </th>";
+                        echo "<th> Telefono </th>";
                     echo "</tr>";
                     $stmt = $message->readAllContactos();
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -65,15 +67,15 @@
                         } else {
                             if ($message->ContarRows() > 0) {
                                 if($message->UpdateRow()){
-                                    echo "<div class='alert alert-success'>Se actualizó el contacto.</div>";
+                                    echo "<div class='alert alert-success'><h3>Se actualizó el contacto.</h3></div>";
                                 } else {
-                                    echo "<div class='alert alert-danger'>El contacto no se actualizó.</div>";
+                                    echo "<div class='alert alert-danger'><h3>El contacto no se actualizó.</h3></div>";
                                 }
                             } else {
                                 if($message->create()){
-                                    echo "<div class='alert alert-success'>Se creó el contacto.</div>";
+                                    echo "<div class='alert alert-success'><h3>Se creó el contacto.</h3></div>";
                                 } else {
-                                    echo "<div class='alert alert-danger'>No se creó el contacto.</div>";
+                                    echo "<div class='alert alert-danger'><h3>No se creó el contacto.</h3></div>";
                                 }
                             }
                         }
