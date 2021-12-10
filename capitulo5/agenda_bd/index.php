@@ -14,20 +14,27 @@
         Curso: 2º DAW
         Modulo: DWES
         -->
+        <h1>Añadir contacto</h1>
+    <p>Instrucciones</p>
+    <ul>
+        <li>Para introducir un contacto a la agenda introduzca un nombre y un numero de teléfono.</li>
+        <li>Para borrar un contacto introduza solo el nombre de este. </li>
+        <li>Para actualizar un contacto escriba el mismo nombre y cambie el numero al que quiere actualizar</li>
+    </ul>
         <form name="formulario" method="get" action="">
-            <label for="name"><h1>Name: </h1></label>
+            <label for="name">Name: </label>
             <input type="text" id="username" name="name" required><br>
-            <label for="telephone"><h1>Contact Number: </h1></label>
+            <label for="telephone">Contact Number: </label>
             <input type="text" maxlength="9" id="telephone" name="telephone"><br><br>
             <input type="submit" value="Submit">
         </form>   
         <?php
-                include_once 'objs/contacto.php';
+                include_once 'objs/contacts.php';
                 include_once 'conf/database.php';
                 
                 $database = new Database();
                 $db = $database->getConnection();
-                $message = new Messages($db);
+                $message = new Contactos($db);
         
                 function mostratTabla($message) {
                     echo "<table class='table table-hover table-responsive table-bordered'>";
@@ -35,7 +42,7 @@
                         echo "<th> Name </th>";
                         echo "<th> Telephone </th>";
                     echo "</tr>";
-                    $stmt = $message->readAllMessages();
+                    $stmt = $message->readAllContactos();
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         extract($row);
                         echo "<tr>";
@@ -52,11 +59,11 @@
                         $message->telephone = $_GET['telephone'];
                         
                         if (empty($message->telephone)) {
-                            if ($message->CountRows()) {
+                            if ($message->ContarRows()) {
                                 $message->DropRow();
                             }
                         } else {
-                            if ($message->CountRows() > 0) {
+                            if ($message->ContarRows() > 0) {
                                 if($message->UpdateRow()){
                                     echo "<div class='alert alert-success'>Se actualizó el contacto.</div>";
                                 } else {
@@ -70,7 +77,7 @@
                                 }
                             }
                         }
-                        if ($message->CountAllRows() > 0) {
+                        if ($message->ContarAllRows() > 0) {
                             mostratTabla($message);
                         }
                     // show Error
@@ -78,7 +85,7 @@
                         die('ERROR: ' . $exception->getMessage());
                     }
                 } else {
-                    if ($message->CountAllRows() > 0) {
+                    if ($message->ContarAllRows() > 0) {
                         mostratTabla($message);
                     }
                 }

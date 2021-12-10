@@ -16,29 +16,30 @@ class Contactos {
     function create(){
 
         // to get time stamp for 'created' field
-        $this->create_time = date('Y-m-d H:i:s');
+        $this->create_time=date('Y-m-d H:i:s');
 
-        // query to insert record
-        $query = "INSERT INTO" . $this->table_name . " SET name=:name, telephoe=:telephoe, create_time=:create_time";
+        // insert query
+        $query = "INSERT INTO " . $this->table_name . " SET name = :name, telephone = :telephone, create_time = :create_time, update_time = :create_time";
 
-        // prepare query
+        // prepare the query
         $stmt = $this->conn->prepare($query);
 
         // sanitize
-        $this->name=htmlspecialchars(strip_tags($this->name));
-        $this->telephoe=htmlspecialchars(strip_tags($this->telephoe));
+        $this->name = htmlspecialchars($this->name);
+        $this->telephone=htmlspecialchars(strip_tags($this->telephone));
 
-        // bind values
-        $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":telephoe", $this->telephoe);
-        $stmt->bindParam(":create_time", $this->create_time);
+        // bind the values
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':telephone', $this->telephone);
+        $stmt->bindParam(':create_time', $this->create_time);
 
-        // execute query
+        // execute the query, also check if query was successful
         if($stmt->execute()){
-            return true;
+                return true;
+        }else{
+                $this->showError($stmt);
+                return false;
         }
-
-        return false;
     }
 
     public function DropRow(){
@@ -90,9 +91,9 @@ class Contactos {
                 return false;
         }
                 
-    }
+    
 
-       public function CountRows() {
+       public function ContarRows() {
         // insert query
         $query = "SELECT COUNT(*) FROM  " . $this->table_name . " WHERE name = :name";
 
@@ -116,7 +117,7 @@ class Contactos {
         }
     }
     
-    public function CountAllRows() {
+    public function ContarAllRows() {
         // insert query
         $query = "SELECT COUNT(*) FROM  " . $this->table_name;
 
@@ -134,7 +135,7 @@ class Contactos {
         }
     }
 
-    function readUserMessages(){
+    function readUserContactos(){
         //select all data
         $query = "SELECT
                     id, name, telephone, create_time
@@ -156,7 +157,7 @@ class Contactos {
     }
 
     // used to read message name by its ID
-    function readAllMessages(){
+    function readAllContactos(){
         
         //select all data
         $query = "SELECT
@@ -174,4 +175,5 @@ class Contactos {
 
 
 }
+
 ?>
