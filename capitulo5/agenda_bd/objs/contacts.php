@@ -69,7 +69,7 @@ class Contactos {
         $this->create_time=date('Y-m-d H:i:s');
         
         // insertar consulta
-        $query = "UPDATE " . $this->table_name . " SET \"telephone\" = :telephone, \"update_time\" = :create_time WHERE name = :name";
+        $query = "UPDATE " . $this->table_name . " SET \"telephone\" = :telephone, \"update_time\" = :create_time WHERE \"name\" = :name";
         
         // prepare query
         $declaracion = $this->conn->prepare($query);
@@ -142,7 +142,7 @@ class Contactos {
                 FROM
                     " . $this->table_name . "
                 ORDER BY
-                    create_time ASC";
+                \"create_time\" ASC";
 
         $declaracion = $this->conn->prepare( $query );
         $declaracion->execute();
