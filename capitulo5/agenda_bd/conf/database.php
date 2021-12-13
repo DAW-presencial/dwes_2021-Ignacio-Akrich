@@ -12,7 +12,7 @@
         public function getConnection(){
 
             try{
-                $this->conn = new PDO("psql:host={$this->host};dbname={$this->db_name}", $this->username, $this->password);
+                $this->conn = new PDO("pgsql:host={$this->host};dbname={$this->db_name}", $this->username, $this->password);
             }catch(PDOException $exception){
                 echo "Connection error: " . $exception->getMessage();
             }

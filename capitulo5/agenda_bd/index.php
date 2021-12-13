@@ -44,8 +44,8 @@
                         echo "<th> Nombre </th>";
                         echo "<th> Telefono </th>";
                     echo "</tr>";
-                    $stmt = $contacto->readAllContactos();
-                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $declaracion = $contacto->readAllContactos();
+                    while ($row = $declaracion->fetch(PDO::FETCH_ASSOC)) {
                         extract($row);
                         echo "<tr>";
                             echo "<td> {$name} </td>";
