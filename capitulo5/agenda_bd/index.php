@@ -35,16 +35,16 @@
                 
                 $database = new Database();
                 $db = $database->getConnection();
-                $message = new Contactos($db);
+                $contacto = new Contactos($db);
         
-                function mostratTabla($message) {
+                function mostratTabla($contacto) {
                     echo "<p>Contactos</p>";
                     echo "<table class='table table-hover table-responsive table-bordered'>";
                     echo "<tr>";
                         echo "<th> Nombre </th>";
                         echo "<th> Telefono </th>";
                     echo "</tr>";
-                    $stmt = $message->readAllContactos();
+                    $stmt = $contacto->readAllContactos();
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         extract($row);
                         echo "<tr>";
@@ -57,38 +57,38 @@
                 
                 if (!empty($_GET)) {
                     try {
-                        $message->name = $_GET['name'];
-                        $message->telephone = $_GET['telephone'];
+                        $contacto->name = $_GET['name'];
+                        $contacto->telephone = $_GET['telephone'];
                         
-                        if (empty($message->telephone)) {
-                            if ($message->ContarRows()) {
-                                $message->DropRow();
+                        if (empty($contacto->telephone)) {
+                            if ($contacto->ContarRows()) {
+                                $contacto->DropRow();
                             }
                         } else {
-                            if ($message->ContarRows() > 0) {
-                                if($message->UpdateRow()){
+                            if ($contacto->ContarRows() > 0) {
+                                if($contacto->UpdateRow()){
                                     echo "<div class='alert alert-success'><h3>Se actualizó el contacto.</h3></div>";
                                 } else {
                                     echo "<div class='alert alert-danger'><h3>El contacto no se actualizó.</h3></div>";
                                 }
                             } else {
-                                if($message->create()){
+                                if($contacto->create()){
                                     echo "<div class='alert alert-success'><h3>Se creó el contacto.</h3></div>";
                                 } else {
                                     echo "<div class='alert alert-danger'><h3>No se creó el contacto.</h3></div>";
                                 }
                             }
                         }
-                        if ($message->ContarAllRows() > 0) {
-                            mostratTabla($message);
+                        if ($contacto->ContarAllRows() > 0) {
+                            mostratTabla($contacto);
                         }
                     // show Error
                     } catch (PDOException $exception) {
                         die('ERROR: ' . $exception->getMessage());
                     }
                 } else {
-                    if ($message->ContarAllRows() > 0) {
-                        mostratTabla($message);
+                    if ($contacto->ContarAllRows() > 0) {
+                        mostratTabla($contacto);
                     }
                 }
         ?>

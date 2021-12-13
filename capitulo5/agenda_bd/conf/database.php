@@ -2,17 +2,17 @@
     class Database{
 
         // especificar credenciales de base de datos
-        private $host = "localhost";
-        private $db_name = "agenda_ignacio_db";
-        private $username = "root";
-        private $password = "";
+        private $host = "51.178.152.213";
+        private $db_name = "agenda_jakrich_db";
+        private $username = "jakrich_usr";
+        private $password = "abc123.";
         public $conn;
 
         // obtener la conexión a la base de datos
         public function getConnection(){
 
             try{
-                $this->conn = new PDO("mysql:host={$this->host};dbname={$this->db_name}", $this->username, $this->password);
+                $this->conn = new PDO("psql:host={$this->host};dbname={$this->db_name}", $this->username, $this->password);
             }catch(PDOException $exception){
                 echo "Connection error: " . $exception->getMessage();
             }
