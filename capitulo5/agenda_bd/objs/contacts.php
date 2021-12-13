@@ -45,7 +45,7 @@ class Contactos {
     public function DropRow(){
 
          // insertar consulta
-         $query = "DELETE FROM " . $this->table_name . " WHERE name = :name";
+         $query = "DELETE FROM " . $this->table_name . " WHERE \"name\" = :name";
          // preparar la consulta
          $declaracion = $this->conn->prepare($query);
          
