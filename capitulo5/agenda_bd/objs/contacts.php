@@ -19,7 +19,7 @@ class Contactos {
         $this->create_time=date('Y-m-d H:i:s');
 
         // insertar consulta
-        $query = "INSERT INTO " . $this->table_name . " SET name = :name, telephone = :telephone, create_time = :create_time, update_time = :create_time";
+        $query = "INSERT INTO " . $this->table_name . " SET \"name\" = :name, \"telephone\" = :telephone, \"create_time\" = :create_time, \"update_time\" = :create_time";
 
         // preparar la consulta
         $declaracion = $this->conn->prepare($query);
@@ -69,7 +69,7 @@ class Contactos {
         $this->create_time=date('Y-m-d H:i:s');
         
         // insertar consulta
-        $query = "UPDATE " . $this->table_name . " SET telephone = :telephone, update_time = :create_time WHERE name = :name";
+        $query = "UPDATE " . $this->table_name . " SET \"telephone\" = :telephone, \"update_time\" = :create_time WHERE name = :name";
         
         // prepare query
         $declaracion = $this->conn->prepare($query);
@@ -95,7 +95,7 @@ class Contactos {
 
        public function ContarRows() {
         // insertar consulta
-        $query = "SELECT COUNT(*) FROM  " . $this->table_name . " WHERE name = :name";
+        $query = "SELECT COUNT(*) FROM  " . $this->table_name . " WHERE \"name\" = :name";
 
         // prepare query
         $declaracion = $this->conn->prepare($query);
@@ -138,7 +138,7 @@ class Contactos {
     function readUserContactos(){
         //selecionar toda data
         $query = "SELECT
-                    id, name, telephone, create_time
+                    \"id\", \"name\", \"telephone\", \"create_time\"
                 FROM
                     " . $this->table_name . "
                 ORDER BY
@@ -160,11 +160,11 @@ class Contactos {
         
         //selecionar toda data
         $query = "SELECT
-                    id, name, telephone, create_time, update_time
+                    \"id\", \"name\", \"telephone\", \"create_time\", \"update_time\"
                 FROM
                     " . $this->table_name . "
                 ORDER BY
-                    create_time ASC";
+                \"create_time\" ASC";
 
         $declaracion = $this->conn->prepare( $query );
         $declaracion->execute();
