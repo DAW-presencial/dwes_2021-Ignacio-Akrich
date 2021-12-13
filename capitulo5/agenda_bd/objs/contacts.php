@@ -19,7 +19,7 @@ class Contactos {
         $this->create_time=date('Y-m-d H:i:s');
 
         // insertar consulta
-        $query = "INSERT INTO " . $this->table_name . " SET \"name\" = :name, \"telephone\" = :telephone, \"create_time\" = :create_time, \"update_time\" = :create_time";
+        $query = "INSERT INTO " . $this->table_name . " ( \"name\" = :name, \"telephone\" = :telephone, \"create_time\" = :create_time, \"update_time\" = :create_time)";
 
         // preparar la consulta
         $declaracion = $this->conn->prepare($query);
