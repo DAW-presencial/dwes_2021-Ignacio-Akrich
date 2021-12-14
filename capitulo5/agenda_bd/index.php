@@ -71,8 +71,7 @@
                                 } else {
                                     echo "<div class='alert alert-danger'><h3>El contacto no se actualizó.</h3></div>";
                                 }
-                            } else if( $contacto->ContarRows() == 0) {
-
+                            } else {
                                 if($contacto->create()){
                                     echo "<div class='alert alert-success'><h3>Se creó el contacto.</h3></div>";
                                 } else {
