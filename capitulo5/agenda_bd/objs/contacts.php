@@ -58,7 +58,7 @@ class Contactos {
         $this->name = htmlspecialchars($this->name);
         $stmt->execute();
         $num = $stmt->fetchColumn();
-        if(intval($num["SELECT COUNT(*) FROM {$this->table_name}"]) > 0){
+        if(intval($num) > 0){
             return true;
         }else{
             return false;
