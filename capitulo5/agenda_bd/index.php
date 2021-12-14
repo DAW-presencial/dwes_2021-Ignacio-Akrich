@@ -38,76 +38,48 @@
                 $contacto = new Contactos($db);
         
                 function mostratTabla($contacto) {
-                    echo "<p>Contactos</p>";
-                    echo "<table class='table table-hover table-responsive table-bordered'>";
-                    echo "<tr>";
-                        echo "<th> Nombre </th>";
-                        echo "<th> Telefono </th>";
-                    echo "</tr>";
-                    $declaracion = $contacto->readAllContactos();
-                    while ($row = $declaracion->fetch(PDO::FETCH_ASSOC)) {
-                        extract($row);
+                    $query = "SELECT
+                                id, nombre, telefono, create_time
+                            FROM
+                                " . $contacto->table_name . "
+                            ORDER BY
+                                id ASC";
+                    $stmt = $contacto->conn->prepare($query);
+                    $stmt->execute();
+                    $num = $stmt->rowCount();
+                    if($num>0){
+                        echo "<table>";
                         echo "<tr>";
-                            echo "<td> {$name} </td>";
-                            echo "<td> {$telephone} </td>";
+                        echo "<th>ID</th>";
+                        echo "<th>Nombre</th>";
+                        echo "<th>Teléfono</th>";
+                        echo "<th>Fecha de creación</th>";
                         echo "</tr>";
-                    };
-                    echo "</table>";
-                }
-                
-                if (!empty($_GET)) {
-                    try {
-                        $contacto->name = $_GET['name'];
-                        $contacto->telephone = $_GET['telephone'];
-                        
-                        if (empty($contacto->telephone)) {
-                            if ($contacto->ContarRows( $contacto->name ) > 0) {
-                                if ($contacto->delete( $contacto->name )) {
-                                    echo "<div class='alert alert-success'>";
-                                    echo "<strong>Contacto borrado correctamente</strong>";
-                                    echo "</div>";
-                                } else {
-                                    echo "<div class='alert alert-danger'>";
-                                    echo "<strong>Error al borrar el contacto</strong>";
-                                    echo "</div>";
-                                }
-                            } else {
-                                echo "<div class='alert alert-danger'>";
-                                echo "<strong>No existe el contacto</strong>";
-                                echo "</div>";
-                            }
-                        } else {
-                            if ($contacto->ContarRows( $contacto->name ) > 0) {
-                                if ($contacto->update( $contacto->name, $contacto->telephone )) {
-                                    echo "<div class='alert alert-success'>";
-                                    echo "<strong>Contacto actualizado correctamente</strong>";
-                                    echo "</div>";
-                                } else {
-                                    echo "<div class='alert alert-danger'>";
-                                    echo "<strong>Error al actualizar el contacto</strong>";
-                                    echo "</div>";
-                                }
-                            } else {
-                                if ($contacto->create()) {
-                                    echo "<div class='alert alert-success'>";
-                                    echo "<strong>Contacto añadido correctamente</strong>";
-                                    echo "</div>";
-                                } else {
-                                    echo "<div class='alert alert-danger'>";
-                                    echo "<strong>Error al añadir el contacto</strong>";
-                                    echo "</div>";
-                                }
-                            }
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                            extract($row);
+                            echo "<tr>";
+                            echo "<td>{$id}</td>";
+                            echo "<td>{$nombre}</td>";
+                            echo "<td>{$telefono}</td>";
+                            echo "<td>{$create_time}</td>";
+                            echo "</tr>";
                         }
-                    } catch (Exception $e) {
-                        echo "<div class='alert alert-danger'>";
-                        echo "<strong>Error al añadir el contacto</strong>";
-                        echo "</div>";
+                        echo "</table>";
                     }
+                }
+
+                if(isset($_GET['name']) && isset($_GET['telephone'])){
+                    $contacto->nombre = $_GET['name'];
+                    $contacto->telefono = $_GET['telephone'];
+                    $contacto->create();
+                }
+                if(isset($_GET['name'])){
+                    $contacto->nombre = $_GET['name'];
+                    $contacto->delete();
                 }
                 mostratTabla($contacto);
         ?>
-
+                   
                                 
     </body>
 </html>
