@@ -58,7 +58,7 @@ class Contactos {
         $this->name = htmlspecialchars($this->name);
         $stmt->execute();
         $num = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(intval($num) > 0){
+        if(intval($num("COUNT(*)")) > 0){
             return true;
         }else{
             return false;
@@ -72,7 +72,7 @@ class Contactos {
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         $num = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(intval($num) > 0){
+        if(intval($num("COUNT(*)")) > 0){
             return true;
         }else{
             return false;
