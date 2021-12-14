@@ -58,7 +58,7 @@ class Contactos {
         $this->name = htmlspecialchars($this->name);
         $stmt->bindParam(":name", $this->name);
         $stmt->execute();
-        $num = $stmt->fetch(PDO::FETCH_ASSOC);
+        $num = $stmt->fetchColumn();
         if(intval($num) > 0){
             return true;
         }else{
