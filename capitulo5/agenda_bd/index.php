@@ -65,21 +65,19 @@
                                 $contacto->DropRow();
                             }
                         } else {
-                            //si el contacto no existe lo creamos, si existe lo actualizamos
-                          
-                           /*  if ($contacto->ContarRows() > 0) {
-                                if($contacto->create()){
-                                    echo "<div class='alert alert-success'><h3>Se creó el contacto.</h3></div>";
-                                } else {
-                                    echo "<div class='alert alert-danger'><h3>No se creó el contacto.</h3></div>";
-                                }
-                            } else {
+                            if ($contacto->ContarRows() > 0) {
                                 if($contacto->UpdateRow()){
                                     echo "<div class='alert alert-success'><h3>Se actualizó el contacto.</h3></div>";
                                 } else {
                                     echo "<div class='alert alert-danger'><h3>El contacto no se actualizó.</h3></div>";
                                 }
-                            } */
+                            } else {
+                                if($contacto->create()){
+                                    echo "<div class='alert alert-success'><h3>Se creó el contacto.</h3></div>";
+                                } else {
+                                    echo "<div class='alert alert-danger'><h3>No se creó el contacto.</h3></div>";
+                                }
+                            }
                         }
                         if ($contacto->ContarAllRows() > 0) {
                             mostratTabla($contacto);
