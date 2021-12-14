@@ -55,6 +55,7 @@ class Contactos {
       
         $query = "SELECT COUNT(*) FROM {$this->table_name}";
         $stmt = $this->conn->prepare($query);
+        $this->name = htmlspecialchars($this->name);
         $stmt->execute();
         $num = $stmt->fetchColumn();
         return $num;
