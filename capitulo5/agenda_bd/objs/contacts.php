@@ -7,7 +7,6 @@ class Contactos {
     public $id;
     public $name;
     public $telephoe;
-    private $create_time;
 
     public function __construct($db){
         $this->conn = $db;
@@ -50,10 +49,7 @@ class Contactos {
         } else {
             return false;
         }
-       
         }
-                
-    
 
        public function ContarRows() {
       
