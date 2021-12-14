@@ -39,37 +39,54 @@
                 $db = $database->getConnection();
                 $contacto = new Contactos($db);
         
-                //al clicaar en el boton crear se ejecuta la funcion create
-                if(isset($_GET['name'])){
+                function mostratTabla($contacto) {
+                    echo "<p>Contactos</p>";
+                    echo "<table class='table table-hover table-responsive table-bordered'>";
+                    echo "<tr>";
+                        echo "<th> Nombre </th>";
+                        echo "<th> Telefono </th>";
+                    echo "</tr>";
+                    $declaracion = $contacto->readAllContactos();
+                    while ($row = $declaracion->fetch(PDO::FETCH_ASSOC)) {
+                        extract($row);
+                        echo "<tr>";
+                            echo "<td> {$name} </td>";
+                            echo "<td> {$telephone} </td>";
+                        echo "</tr>";
+                    };
+                    echo "</table>";
+                }
+                
+                // Si se ha pulsado el boton de crear contacto se ejecuta la funcion create()
+                if (isset($_GET['name'])) {
                     $contacto->name = $_GET['name'];
                     $contacto->telephone = $_GET['telephone'];
-                    if($contacto->create()){
-                        echo "<div class='alert alert-success'>Contacto creado.</div>";
+                    if ($contacto->create()) {
+                        echo "<div class='alert alert-success'>Contacto creado correctamente.</div>";
                     } else {
                         echo "<div class='alert alert-danger'>Error al crear el contacto.</div>";
                     }
                 }
-                //al clicaar en el boton borrar se ejecuta la funcion DropRow
-                if(isset($_GET['name'])){
+                // Si se ha pulsado el boton de borrar contacto se ejecuta la funcion DropRow()
+                if (isset($_GET['name'])) {
                     $contacto->name = $_GET['name'];
-                    if($contacto->DropRow()){
-                        echo "<div class='alert alert-success'>Contacto borrado.</div>";
+                    if ($contacto->DropRow()) {
+                        echo "<div class='alert alert-success'>Contacto borrado correctamente.</div>";
                     } else {
                         echo "<div class='alert alert-danger'>Error al borrar el contacto.</div>";
                     }
                 }
-                //al clicaar en el boton actualizar se ejecuta la funcion UpdateRow
-                if(isset($_GET['name'])){
+                // Si se ha pulsado el boton de actualizar contacto se ejecuta la funcion update()
+                if (isset($_GET['name'])) {
                     $contacto->name = $_GET['name'];
                     $contacto->telephone = $_GET['telephone'];
-                    if($contacto->UpdateRow()){
-                        echo "<div class='alert alert-success'>Contacto actualizado.</div>";
+                    if ($contacto->UpdateRow()) {
+                        echo "<div class='alert alert-success'>Contacto actualizado correctamente.</div>";
                     } else {
                         echo "<div class='alert alert-danger'>Error al actualizar el contacto.</div>";
                     }
                 }
-                
-
+               
         ?>
     </body>
 </html>
