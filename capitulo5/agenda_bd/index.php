@@ -55,7 +55,7 @@
                     echo "</table>";
                 }
                 
-                if (isset($_GET['submit'])) {
+                if (!empty($_GET)) {
                     try {
                         $contacto->name = $_GET['name'];
                         $contacto->telephone = $_GET['telephone'];
@@ -71,7 +71,7 @@
                                 } else {
                                     echo "<div class='alert alert-danger'><h3>El contacto no se actualizó.</h3></div>";
                                 }
-                            } else {
+                            } else if ($contacto->ContarRows() == $contacto->ContarAllRows()) {
                                 if($contacto->create()){
                                     echo "<div class='alert alert-success'><h3>Se creó el contacto.</h3></div>";
                                 } else {
