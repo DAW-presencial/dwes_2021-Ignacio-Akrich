@@ -27,9 +27,7 @@
             <input type="text" id="username" name="name" required><br>
             <label for="telephone">Teléfono: </label>
             <input type="text" maxlength="9" id="telephone" name="telephone"><br><br>
-            <input type="submit" value="Crear">
-            <input type="submit" value="Borrar">
-            <input type="submit" value="Actualizar">
+            <input type="submit" value="Enviar">
         </form>   
         <?php
                 include_once 'objs/contacts.php';
@@ -57,36 +55,36 @@
                     echo "</table>";
                 }
                 
-                // Si se ha pulsado el boton de crear contacto se ejecuta la funcion create()
-                if (isset($_GET['name'])) {
-                    $contacto->name = $_GET['name'];
-                    $contacto->telephone = $_GET['telephone'];
-                    if ($contacto->create()) {
-                        echo "<div class='alert alert-success'>Contacto creado correctamente.</div>";
-                    } else {
-                        echo "<div class='alert alert-danger'>Error al crear el contacto.</div>";
+                if (!empty($_GET)) {
+                    try {
+                        $contacto->name = $_GET['name'];
+                        $contacto->telephone = $_GET['telephone'];
+                        
+                        if (empty($contacto->telephone)) {
+                            if ($contacto->ContarRows()) {
+                                $contacto->DropRow();
+                            }
+                        } else {
+                            // Si el contacto no existe lo creamos
+                            if ($contacto->ContarRows()) {
+                                $contacto->UpdateRow();
+                            } else {
+                                $contacto->create();
+                            }
+                            
+                        }
+                        if ($contacto->ContarAllRows() > 0) {
+                            mostratTabla($contacto);
+                        }
+                    // show Error
+                    } catch (PDOException $exception) {
+                        die('ERROR: ' . $exception->getMessage());
+                    }
+                } else {
+                    if ($contacto->ContarAllRows() > 0) {
+                        mostratTabla($contacto);
                     }
                 }
-                // Si se ha pulsado el boton de borrar contacto se ejecuta la funcion DropRow()
-                if (isset($_GET['name'])) {
-                    $contacto->name = $_GET['name'];
-                    if ($contacto->DropRow()) {
-                        echo "<div class='alert alert-success'>Contacto borrado correctamente.</div>";
-                    } else {
-                        echo "<div class='alert alert-danger'>Error al borrar el contacto.</div>";
-                    }
-                }
-                // Si se ha pulsado el boton de actualizar contacto se ejecuta la funcion update()
-                if (isset($_GET['name'])) {
-                    $contacto->name = $_GET['name'];
-                    $contacto->telephone = $_GET['telephone'];
-                    if ($contacto->UpdateRow()) {
-                        echo "<div class='alert alert-success'>Contacto actualizado correctamente.</div>";
-                    } else {
-                        echo "<div class='alert alert-danger'>Error al actualizar el contacto.</div>";
-                    }
-                }
-               
         ?>
     </body>
 </html>
