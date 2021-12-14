@@ -61,36 +61,53 @@
                         $contacto->telephone = $_GET['telephone'];
                         
                         if (empty($contacto->telephone)) {
-                            if ($contacto->ContarRows()) {
-                                $contacto->DropRow();
-                            }
-                        } else {
-                            if ($contacto->ContarRows() > 0) {
-                                if($contacto->UpdateRow()){
-                                    echo "<div class='alert alert-success'><h3>Se actualizó el contacto.</h3></div>";
+                            if ($contacto->ContarRows( $contacto->name ) > 0) {
+                                if ($contacto->delete( $contacto->name )) {
+                                    echo "<div class='alert alert-success'>";
+                                    echo "<strong>Contacto borrado correctamente</strong>";
+                                    echo "</div>";
                                 } else {
-                                    echo "<div class='alert alert-danger'><h3>El contacto no se actualizó.</h3></div>";
+                                    echo "<div class='alert alert-danger'>";
+                                    echo "<strong>Error al borrar el contacto</strong>";
+                                    echo "</div>";
                                 }
                             } else {
-                                if($contacto->create()){
-                                    echo "<div class='alert alert-success'><h3>Se creó el contacto.</h3></div>";
+                                echo "<div class='alert alert-danger'>";
+                                echo "<strong>No existe el contacto</strong>";
+                                echo "</div>";
+                            }
+                        } else {
+                            if ($contacto->ContarRows( $contacto->name ) > 0) {
+                                if ($contacto->update( $contacto->name, $contacto->telephone )) {
+                                    echo "<div class='alert alert-success'>";
+                                    echo "<strong>Contacto actualizado correctamente</strong>";
+                                    echo "</div>";
                                 } else {
-                                    echo "<div class='alert alert-danger'><h3>No se creó el contacto.</h3></div>";
+                                    echo "<div class='alert alert-danger'>";
+                                    echo "<strong>Error al actualizar el contacto</strong>";
+                                    echo "</div>";
+                                }
+                            } else {
+                                if ($contacto->create()) {
+                                    echo "<div class='alert alert-success'>";
+                                    echo "<strong>Contacto añadido correctamente</strong>";
+                                    echo "</div>";
+                                } else {
+                                    echo "<div class='alert alert-danger'>";
+                                    echo "<strong>Error al añadir el contacto</strong>";
+                                    echo "</div>";
                                 }
                             }
                         }
-                        if ($contacto->ContarAllRows() > 0) {
-                            mostratTabla($contacto);
-                        }
-                    // show Error
-                    } catch (PDOException $exception) {
-                        die('ERROR: ' . $exception->getMessage());
-                    }
-                } else {
-                    if ($contacto->ContarAllRows() > 0) {
-                        mostratTabla($contacto);
+                    } catch (Exception $e) {
+                        echo "<div class='alert alert-danger'>";
+                        echo "<strong>Error al añadir el contacto</strong>";
+                        echo "</div>";
                     }
                 }
+                mostratTabla($contacto);
         ?>
+
+                                
     </body>
 </html>

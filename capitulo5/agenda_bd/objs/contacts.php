@@ -63,7 +63,7 @@ class Contactos {
          return $statement;
      }
      
- public function countAll(){
+ public function ContarAllRows(){
    
      $query = "SELECT id FROM " . $this->table_name . "";
    
@@ -171,7 +171,7 @@ class Contactos {
      return $statement;
  }
    
- public function countAll_BySearch($search_term){
+ public function ContarRows($search_term){
    
      // select query
      $query = "SELECT
