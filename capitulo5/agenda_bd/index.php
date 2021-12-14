@@ -65,7 +65,7 @@
                                 $contacto->DropRow();
                             }
                         } else {
-                            if ($contacto->ContarRows() > 0 && /* El name no exista */ $contacto->ContarRows() < 2) {
+                            if ($contacto->ContarRows() > 0 && $contacto->name != $contacto->readAllContactos()->fetch(PDO::FETCH_ASSOC)['name']) {
                                 if($contacto->create()){
                                     echo "<div class='alert alert-success'><h3>Se creó el contacto.</h3></div>";
                                 } else {
