@@ -55,9 +55,14 @@ class Contactos {
       
         $query = "SELECT COUNT(*) FROM {$this->table_name}";
         $stmt = $this->conn->prepare($query);
+        $this->name = htmlspecialchars($this->name);
         $stmt->execute();
-        $num = $stmt->rowCount();
-        return $num;
+        $num = $stmt->fetchColumn();
+        if(intval($num["COUNT(*)"]) > 0){
+            return true;
+        }else{
+            return false;
+        }
 
     }
     
@@ -67,7 +72,11 @@ class Contactos {
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         $num = $stmt->fetchColumn();
-        return $num;
+        if(intval($num["COUNT(*)"]) > 0){
+            return true;
+        }else{
+            return false;
+        }
 
       
     }
