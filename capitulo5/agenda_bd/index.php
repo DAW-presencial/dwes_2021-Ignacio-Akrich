@@ -38,48 +38,59 @@
                 $contacto = new Contactos($db);
         
                 function mostratTabla($contacto) {
-                    $query = "SELECT
-                                id, nombre, telefono, create_time
-                            FROM
-                                " . $contacto->table_name . "
-                            ORDER BY
-                                id ASC";
-                    $stmt = $contacto->conn->prepare($query);
-                    $stmt->execute();
-                    $num = $stmt->rowCount();
-                    if($num>0){
-                        echo "<table>";
+                    echo "<p>Contactos</p>";
+                    echo "<table class='table table-hover table-responsive table-bordered'>";
+                    echo "<tr>";
+                        echo "<th> Nombre </th>";
+                        echo "<th> Telefono </th>";
+                    echo "</tr>";
+                    $declaracion = $contacto->readAllContactos();
+                    while ($row = $declaracion->fetch(PDO::FETCH_ASSOC)) {
+                        extract($row);
                         echo "<tr>";
-                        echo "<th>ID</th>";
-                        echo "<th>Nombre</th>";
-                        echo "<th>Teléfono</th>";
-                        echo "<th>Fecha de creación</th>";
+                            echo "<td> {$name} </td>";
+                            echo "<td> {$telephone} </td>";
                         echo "</tr>";
-                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                            extract($row);
-                            echo "<tr>";
-                            echo "<td>{$id}</td>";
-                            echo "<td>{$nombre}</td>";
-                            echo "<td>{$telefono}</td>";
-                            echo "<td>{$create_time}</td>";
-                            echo "</tr>";
+                    };
+                    echo "</table>";
+                }
+                
+                if (!empty($_GET)) {
+                    try {
+                        $contacto->name = $_GET['name'];
+                        $contacto->telephone = $_GET['telephone'];
+                        
+                        if (empty($contacto->telephone)) {
+                            if ($contacto->ContarRows()) {
+                                $contacto->DropRow();
+                            }
+                        } else {
+                            if ($contacto->ContarRows() > 0) {
+                                if($contacto->UpdateRow()){
+                                    echo "<div class='alert alert-success'><h3>Se actualizó el contacto.</h3></div>";
+                                } else {
+                                    echo "<div class='alert alert-danger'><h3>El contacto no se actualizó.</h3></div>";
+                                }
+                            } else {
+                                if($contacto->create()){
+                                    echo "<div class='alert alert-success'><h3>Se creó el contacto.</h3></div>";
+                                } else {
+                                    echo "<div class='alert alert-danger'><h3>No se creó el contacto.</h3></div>";
+                                }
+                            }
                         }
-                        echo "</table>";
+                        if ($contacto->ContarAllRows() > 0) {
+                            mostratTabla($contacto);
+                        }
+                    // show Error
+                    } catch (PDOException $exception) {
+                        die('ERROR: ' . $exception->getMessage());
+                    }
+                } else {
+                    if ($contacto->ContarAllRows() > 0) {
+                        mostratTabla($contacto);
                     }
                 }
-
-                if(isset($_GET['name']) && isset($_GET['telephone'])){
-                    $contacto->nombre = $_GET['name'];
-                    $contacto->telefono = $_GET['telephone'];
-                    $contacto->create();
-                }
-                if(isset($_GET['name'])){
-                    $contacto->nombre = $_GET['name'];
-                    $contacto->delete();
-                }
-                mostratTabla($contacto);
         ?>
-                   
-                                
     </body>
 </html>
