@@ -57,8 +57,8 @@ class Contactos {
         $stmt = $this->conn->prepare($query);
         $this->name = htmlspecialchars($this->name);
         $stmt->execute();
-        $num = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(intval($num("COUNT(*)")) > 0){
+        $num = $stmt->fetchColumn();
+        if(intval($num["SELECT COUNT(*) FROM {$this->table_name}"]) > 0){
             return true;
         }else{
             return false;
@@ -71,8 +71,8 @@ class Contactos {
         $query = "SELECT COUNT(*) FROM {$this->table_name}";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        $num = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(intval($num("COUNT(*)")) > 0){
+        $num = $stmt->fetchColumn();
+        if(intval($num["SELECT COUNT(*) FROM {$this->table_name}"]) > 0){
             return true;
         }else{
             return false;
