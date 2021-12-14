@@ -27,7 +27,9 @@
             <input type="text" id="username" name="name" required><br>
             <label for="telephone">Teléfono: </label>
             <input type="text" maxlength="9" id="telephone" name="telephone"><br><br>
-            <input type="submit" value="Enviar">
+            <input type="submit" value="Crear">
+            <input type="submit" value="Borrar">
+            <input type="submit" value="Actualizar">
         </form>   
         <?php
                 include_once 'objs/contacts.php';
@@ -37,60 +39,37 @@
                 $db = $database->getConnection();
                 $contacto = new Contactos($db);
         
-                function mostratTabla($contacto) {
-                    echo "<p>Contactos</p>";
-                    echo "<table class='table table-hover table-responsive table-bordered'>";
-                    echo "<tr>";
-                        echo "<th> Nombre </th>";
-                        echo "<th> Telefono </th>";
-                    echo "</tr>";
-                    $declaracion = $contacto->readAllContactos();
-                    while ($row = $declaracion->fetch(PDO::FETCH_ASSOC)) {
-                        extract($row);
-                        echo "<tr>";
-                            echo "<td> {$name} </td>";
-                            echo "<td> {$telephone} </td>";
-                        echo "</tr>";
-                    };
-                    echo "</table>";
+                //al clicaar en el boton crear se ejecuta la funcion create
+                if(isset($_GET['name'])){
+                    $contacto->name = $_GET['name'];
+                    $contacto->telephone = $_GET['telephone'];
+                    if($contacto->create()){
+                        echo "<div class='alert alert-success'>Contacto creado.</div>";
+                    } else {
+                        echo "<div class='alert alert-danger'>Error al crear el contacto.</div>";
+                    }
+                }
+                //al clicaar en el boton borrar se ejecuta la funcion DropRow
+                if(isset($_GET['name'])){
+                    $contacto->name = $_GET['name'];
+                    if($contacto->DropRow()){
+                        echo "<div class='alert alert-success'>Contacto borrado.</div>";
+                    } else {
+                        echo "<div class='alert alert-danger'>Error al borrar el contacto.</div>";
+                    }
+                }
+                //al clicaar en el boton actualizar se ejecuta la funcion UpdateRow
+                if(isset($_GET['name'])){
+                    $contacto->name = $_GET['name'];
+                    $contacto->telephone = $_GET['telephone'];
+                    if($contacto->UpdateRow()){
+                        echo "<div class='alert alert-success'>Contacto actualizado.</div>";
+                    } else {
+                        echo "<div class='alert alert-danger'>Error al actualizar el contacto.</div>";
+                    }
                 }
                 
-                if (!empty($_GET)) {
-                    try {
-                        $contacto->name = $_GET['name'];
-                        $contacto->telephone = $_GET['telephone'];
-                        
-                        if (empty($contacto->telephone)) {
-                            if ($contacto->ContarRows()) {
-                                $contacto->DropRow();
-                            }
-                        } else {
-                            if ($contacto->ContarRows() > 0) {
-                                if($contacto->UpdateRow()){
-                                    echo "<div class='alert alert-success'><h3>Se actualizó el contacto.</h3></div>";
-                                } else {
-                                    echo "<div class='alert alert-danger'><h3>El contacto no se actualizó.</h3></div>";
-                                }
-                            } else {
-                                if($contacto->create()){
-                                    echo "<div class='alert alert-success'><h3>Se creó el contacto.</h3></div>";
-                                } else {
-                                    echo "<div class='alert alert-danger'><h3>No se creó el contacto.</h3></div>";
-                                }
-                            }
-                        }
-                        if ($contacto->ContarAllRows() > 0) {
-                            mostratTabla($contacto);
-                        }
-                    // show Error
-                    } catch (PDOException $exception) {
-                        die('ERROR: ' . $exception->getMessage());
-                    }
-                } else {
-                    if ($contacto->ContarAllRows() > 0) {
-                        mostratTabla($contacto);
-                    }
-                }
+
         ?>
     </body>
 </html>
