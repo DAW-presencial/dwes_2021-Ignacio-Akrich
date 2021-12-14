@@ -72,7 +72,7 @@ class Contactos {
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         $num = $stmt->fetchColumn();
-        if(intval($num["SELECT COUNT(*) FROM {$this->table_name}"]) > 0){
+        if(intval($num) > 0){
             return true;
         }else{
             return false;
